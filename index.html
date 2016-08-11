@@ -1,0 +1,48 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Backbone Setup</title>
+  <script src="jquery-3.0.0.min.js"></script>
+  <script src="underscore.js"></script>
+  <script src="backbone.js"></script>
+
+</head>
+
+<body>
+</body>
+
+<script>
+var TravelTimeModel = Backbone.Model.extend({
+ defaults:{
+ }
+});
+
+var TravelTimeCollection = Backbone.Collection.extend({
+ model: TravelTimeModel,
+ url: "http://wsdot.com/Traffic/api/TravelTimes/TravelTimesREST.svc/GetTravelTimesAsJson?AccessCode=e901f9a2-936d-49fb-90a7-304f89fb5431"
+})
+var travelTimes = new TravelTimeCollection();
+travelTimes.fetch().then(function() {
+  // first dirty look
+  console.log('travelTimes: ', travelTimes);
+
+  // get total model count
+  console.log('travelTimes length: ', travelTimes.length);
+
+
+  // 30th model CurrentTime
+  console.log('30th model = ', travelTimes.at(30));
+  
+
+  // first model's CurrentTime
+  console.log('first model current time: ', travelTimes.models[0].get("CurrentTime"));
+  
+  // get all models with CurrentTime 10
+  console.log(travelTimes.where({CurrentTime: 10}));
+
+  // get only the first model with the given Name
+  console.log(travelTimes.findWhere({Name: "Bellevue-Seattle via 520 (WB PM)"}));
+});
+</script>
+
+</html>
